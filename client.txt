@@ -1,7 +1,8 @@
-#Code ASCII du projet réseau
+#Code ASCII du projet réseau côté client
 #Author: Mathis Bernadet
 #Version: 1.0
 #Date: 26/11/25
 
-
-
+PLAY <x> <y>
+RESULTAT <0/1>          #0 = eau, 1 = touché 
+READY                   #Après génération des bateaux  
