@@ -1,4 +1,7 @@
-#Code ASCII du projet réseau côté serveur
+#Code ASCII du projet réseau
 #Author: Mathis Bernadet
 #Version: 1.0
 #Date: 26/11/25
+
+
+
