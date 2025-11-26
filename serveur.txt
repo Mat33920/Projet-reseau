@@ -2,3 +2,11 @@
 #Author: Mathis Bernadet
 #Version: 1.0
 #Date: 26/11/25
+
+WELCOME <id>            #0 ou 1  
+START                   #Une fois les deux joueurs connectés  
+YOUR_TURN               #Au joueur actif  
+WAIT                    #A l'autre joueur 
+OPPENENT <x> <y> <r>    #r = 0 eau | 1 touché   
+WIN
+LOSE
