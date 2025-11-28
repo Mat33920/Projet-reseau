@@ -49,7 +49,7 @@ def main():
 
         if msg.startswith("PLAY"):
             _, x, y = msg.split()
-            send(other, msg)  *
+            send(other, msg) 
 
             res = recv_line(other) 
             send(current, res)      
