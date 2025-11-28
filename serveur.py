@@ -66,7 +66,7 @@ def main():
                 send(other, "WIN")
                 break
 
-        # échange des rôles
+       
         current, other = other, current
 
     conn1.close()
