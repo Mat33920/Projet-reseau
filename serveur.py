@@ -1,6 +1,3 @@
-#!/usr/bin/python3
-
-
 import socket
 import threading
 
@@ -17,7 +14,7 @@ def send(conn, msg):
     conn.sendall((msg + "\n").encode())
 
 def handle_player(conn, player_id, other_conn):
-    pass  
+    pass  # rien ici ; le serveur pilote le flux
 
 def main():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -49,16 +46,17 @@ def main():
 
         if msg.startswith("PLAY"):
             _, x, y = msg.split()
-            send(other, msg) 
+            send(other, msg)  # OPPOSANT reçoit le coup
 
-            res = recv_line(other) 
-            send(current, res)      
+            res = recv_line(other)  # RESULT <0/1>
+            send(current, res)      # renvoi le résultat au joueur actif
 
-            if res == "RESULT 1":  
-            
+            if res == "RESULT 1":   # vérifier la victoire ?
+                # Ici on NE SAIT PAS encore si c'est coulé ou gagné,
+                # c'est le client qui décidera selon sa grille.
                 pass
 
-           
+            # si un client signale WIN/LOSE (optionnel)
             if res == "WIN":
                 send(other, "LOSE")
                 break
@@ -66,7 +64,7 @@ def main():
                 send(other, "WIN")
                 break
 
-       
+        # échange des rôles
         current, other = other, current
 
     conn1.close()

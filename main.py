@@ -99,4 +99,6 @@ def main():
     else:
         print("you loose !")
 
-main()
+
+if __name__ == "__main__":
+    main()

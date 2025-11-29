@@ -110,6 +110,3 @@ def isANewShot(x,y, shots):
         if (xx,yy) == (x,y):
             return False
     return True
-
-
-

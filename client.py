@@ -1,8 +1,4 @@
-#!/usr/bin/python3
-
-
 import socket
-import sys
 from game import *
 from main import randomConfiguration, displayGame, addShot
 
@@ -12,15 +8,13 @@ def recv_line(sock):
         data += sock.recv(1024)
     return data.decode().strip()
 
-def envoyer(sock, msg):
+def send(sock, msg):
     sock.sendall((msg + "\n").encode())
 
-
-    
 def main():
-
+    import sys
     if len(sys.argv) != 2:
-        print("Utilisation: python client.py <serveur>")
+        print("Usage: python client.py <serveur>")
         return
 
     host = sys.argv[1]
@@ -30,16 +24,16 @@ def main():
 
     print("Connecté au serveur")
 
-   
+    # Réception du WELCOME
     msg = recv_line(sock)
     _, pid = msg.split()
     pid = int(pid)
 
-    # Générer les bateaux
+    # Générer nos bateaux
     boats = randomConfiguration()
     other_shots = []
     my_shots = []
-    game = Game(boats, randomConfiguration()) 
+    game = Game(boats, randomConfiguration())  # l'adversaire, inconnu !
 
     print("Vos bateaux sont placés :")
     displayGame(game, pid)
@@ -62,9 +56,8 @@ def main():
             is_hit = isAStrike(boats, x, y)
             send(sock, f"RESULT {1 if is_hit else 0}")
 
-            resultat = "TOUCHE" if is_hit else "à l'eau"
-            print(f"L'adversaire a tiré en {chr(x+64)} {y} : {resultat}")
-
+            result_text = "TOUCHE" if is_hit else "à l'eau"
+            print(f"L'adversaire a tiré en {chr(x+64)} {y} : {result_text}")
         elif msg.startswith("RESULT"):
             _, r = msg.split()
             print("==> TOUCHÉ !" if r == "1" else "==> À l'eau")
