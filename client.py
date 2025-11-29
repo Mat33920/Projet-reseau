@@ -24,16 +24,16 @@ def main():
 
     print("Connecté au serveur")
 
-    # Réception du WELCOME
+    
     msg = recv_line(sock)
     _, pid = msg.split()
     pid = int(pid)
 
-    # Générer nos bateaux
+    
     boats = randomConfiguration()
     other_shots = []
     my_shots = []
-    game = Game(boats, randomConfiguration())  # l'adversaire, inconnu !
+    game = Game(boats, randomConfiguration())  
 
     print("Vos bateaux sont placés :")
     displayGame(game, pid)
