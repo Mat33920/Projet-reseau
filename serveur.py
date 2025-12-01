@@ -37,13 +37,13 @@ def send_line(conn, s):
 
 class GameState:
     def __init__(self):
-        # boats: dict name -> list of boats (each boat as dict)
+        
         self.boats = {}
-        # shots: dict name -> list of (x,y,hit)
+        
         self.shots = {}
-        # order: [player_name0, player_name1] if two players assigned
+       
         self.players = []
-        self.current_index = 0  # whose turn index in players
+        self.current_index = 0  
         self.over = False
 
     def reset_for_next_round(self):
@@ -70,23 +70,23 @@ class GameState:
         self.current_index = d["current_index"]
         self.over = d["over"]
 
-# server-wide state
+
 state = GameState()
-clients = {}       # name -> (conn, role) role in {"PLAYER", "OBSERVER"}
-addr2name = {}     # socket fileno -> name
+clients = {}       
+addr2name = {}     
 scores = load_scores()
 
 def boat_from_dict(bd):
     return Boat(bd["x"], bd["y"], bd["length"], bd["isHorizontal"])
 
 def check_victory(shots_by_player, opponent_name):
-    # count distinct hit squares on opponent boats
+   
     hits = 0
     opp_boats = state.boats.get(opponent_name, [])
     for shot in shots_by_player:
         if shot[2]:
             hits += 1
-    # TOTAL_LENGTH = 17 in your game.py
+    
     return hits >= 17
 
 def handle_client(conn, addr):
@@ -103,7 +103,7 @@ def handle_client(conn, addr):
             cmd = parts[0]
 
             if cmd == "JOIN":
-                # JOIN <name> <ROLE>
+                
                 if len(parts) < 3:
                     send_line(conn, "ERROR JOIN requires name and ROLE")
                     continue
@@ -115,7 +115,7 @@ def handle_client(conn, addr):
                     if name not in scores:
                         scores[name] = {"wins": 0, "losses": 0}
                 if role == "PLAYER":
-                    # assign player slot if less than 2 players
+                   
                     with lock:
                         if name not in state.players and len(state.players) < 2:
                             state.players.append(name)
@@ -123,7 +123,7 @@ def handle_client(conn, addr):
                             state.boats.setdefault(name, [])
                             send_line(conn, f"ASSIGNED PLAYER {state.players.index(name)}")
                         else:
-                            # if two players already, become observer
+                           
                             state.shots.setdefault(name, [])
                             state.boats.setdefault(name, [])
                             send_line(conn, "ASSIGNED OBSERVER")
@@ -131,10 +131,10 @@ def handle_client(conn, addr):
                 else:
                     send_line(conn, "ASSIGNED OBSERVER")
 
-                # send scoreboard
+                
                 send_line(conn, "SCOREBOARD " + json.dumps(scores))
 
-                # if both players present and both have sent READY, start
+                
                 with lock:
                     if len(state.players) == 2:
                         p0, p1 = state.players
@@ -146,7 +146,7 @@ def handle_client(conn, addr):
                 continue
 
             if cmd == "READY":
-                # READY <json_boats>
+               
                 if name is None:
                     send_line(conn, "ERROR must JOIN first")
                     continue
@@ -156,13 +156,13 @@ def handle_client(conn, addr):
                 boats_json = parts[1]
                 try:
                     b = json.loads(boats_json)
-                    # validate structure? minimal check
+                   
                     state.boats[name] = b
                     state.shots.setdefault(name, [])
                     send_line(conn, "INFO boats registered")
                 except Exception as e:
                     send_line(conn, f"ERROR invalid boats json {e}")
-                # maybe start game if both players ready
+                
                 with lock:
                     if len(state.players) == 2:
                         p0, p1 = state.players
@@ -237,7 +237,7 @@ def handle_client(conn, addr):
                             send_line(clients[opp][0], "LOSE")
                         broadcast(f"SCOREBOARD {json.dumps(scores)}")
                     else:
-                        # next player's turn
+                        
                         with lock:
                             state.current_index = 1 - state.current_index
                             notify_turns()
