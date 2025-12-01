@@ -3,6 +3,8 @@
 #Version: 1.0
 #Date: 26/11/25
 
-PLAY <x> <y>
-RESULTAT <0/1>          #0 = eau, 1 = touché 
-READY                   #Après génération des bateaux  
+JOIN <name> <ROLE>         
+READY <json_boats>         
+PLAY <x> <y>               
+RECONNECT <name>           
+QUIT                       

@@ -3,10 +3,16 @@
 #Version: 1.0
 #Date: 26/11/25
 
-WELCOME <id>            #0 ou 1  
-START                   #Une fois les deux joueurs connectés  
-YOUR_TURN               #Au joueur actif  
-WAIT                    #A l'autre joueur 
-OPPENENT <x> <y> <r>    #r = 0 eau | 1 touché   
-WIN
-LOSE
+WELCOME <id>               # id interne (optionnel)
+ASSIGNED PLAYER <slot>     # slot = 0 ou 1
+ASSIGNED OBSERVER
+START                      # quand il y a 2 joueurs prêts
+YOUR_TURN
+WAIT
+RESULT <0/1>               # 1 = touché, 0 = eau
+OPPONENT_PLAYED <x> <y> <0/1>
+STATE <json_state>       
+SCOREBOARD <json_scores>   # scoreboard
+INFO <text>                # info lisible
+WIN / LOSE                 # fin de manche
+ERROR <text>
